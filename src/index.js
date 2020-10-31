@@ -13,12 +13,16 @@ function logReq( req, resp, next ) {
 
     const logLabel = `[${method.toUpperCase()}] ${url}`
 
-    console.log(logLabel)
+    console.time(logLabel)
 
     next()
+
+    console.timeEnd(logLabel)
 }
 
-app.get('/projects', logReq,  (req, resp) => {
+app.use('/projects', logReq)
+
+app.get('/projects',  (req, resp) => {
     const {title} = req.query
 
     const results = title 
@@ -78,4 +82,8 @@ app.delete('/projects/:id',  (req, resp) => {
     return resp.status(204).send()
 })
 
-app.listen( '3333', () => { console.log( 'Servidor rodando na porta 3333' ) } )
+if(app.listen()) {
+    app.listen().close()
+}
+
+app.listen( '7777', () => { console.log( 'Servidor rodando na porta 7777' ) } )
