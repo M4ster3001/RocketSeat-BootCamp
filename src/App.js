@@ -32,9 +32,8 @@ export default function App() {
     api.post(`repositories/${id}/like`).then(response => {
       const repositoryIndex = repositories.findIndex( repository => repository.id === id )
       repositories[repositoryIndex] = response.data
-      console.log(repositories)
-
-      setRepositories(repositories)
+      
+      setRepositories( repositories=> [...repositories] )
     } )
   }
 
