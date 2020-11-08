@@ -25,6 +25,30 @@ class TransactionsRepository {
   }
 
   public getBalance(): Balance {
+    /* Vídeo de explicação do desafio
+    const { income, outcome } = this.transactions.reduce(
+      (acumulador: Balance, transaction: Transaction) => {
+        switch (transaction.type) {
+          case 'income':
+            acumulador.income += transaction.value;
+            break;
+          case 'outcome':
+            acumulador.outcome += transaction.value;
+            break;
+          default:
+            break;
+        }
+
+        return acumulador;
+      },
+      {
+        income: 0,
+        outcome: 0,
+        total: 0,
+      },
+    );
+    */
+
     const income = this.transactions
       .filter(transaction => transaction.type === 'income')
       .reduce((total = 0, transaction) => {
@@ -46,13 +70,6 @@ class TransactionsRepository {
     type,
   }: CreateTransactionDTO): Transaction | null {
     const transaction = new Transaction({ title, value, type });
-
-    if (
-      transaction.type === 'outcome' &&
-      this.getBalance().income < transaction.value
-    ) {
-      return null;
-    }
 
     this.transactions.push(transaction);
 
