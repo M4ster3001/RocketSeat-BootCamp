@@ -8,6 +8,9 @@
     "dev:server": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts",
     "start": "ts-node src/index.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
+    "typeorm:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
+    "typeorm:rvt": "ts-node-dev ./node_modules/typeorm/cli.js migration:revert",
+    "typeorm:ct": "ts-node-dev ./node_modules/typeorm/cli.js migration:create -n",
     "test": "cross-env NODE_ENV=test jest"
   },
   "dependencies": {
