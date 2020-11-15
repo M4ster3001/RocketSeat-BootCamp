@@ -31,7 +31,6 @@ class ImportTransactionsService {
 
     const parseCSV = readCSVStream.pipe(parseStream);
     const transactions: TransactionFile[] = [];
-    const transactionsFile: Transaction[] = [];
     const categories: string[] = [];
 
     parseCSV.on('data', async line => {
