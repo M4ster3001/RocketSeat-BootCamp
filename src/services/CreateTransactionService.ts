@@ -1,4 +1,5 @@
 import { getCustomRepository, getRepository } from 'typeorm';
+import AppError from '../errors/AppError';
 // import AppError from '../errors/AppError';
 import Category from '../models/Category';
 import Transaction from '../models/Transaction';
@@ -21,7 +22,20 @@ class CreateTransactionService {
     const transactionRepository = getCustomRepository(TransactionRepository);
     const categoryRepository = getRepository(Category);
 
-    let category_data = await categoryRepository.findOne({ title: category });
+    if (!['income', 'outcome'].includes(type)) {
+      throw new AppError('Tipo inválido');
+    }
+
+    if (
+      type === 'outcome' &&
+      (await transactionRepository.getBalance()).total < value
+    ) {
+      throw new AppError('Saldo insuficiente');
+    }
+
+    let category_data = await categoryRepository.findOne({
+      title: category.trim(),
+    });
 
     if (!category_data) {
       const newCategory = categoryRepository.create({

@@ -5,7 +5,7 @@ import transactionsRouter from './transactions.routes';
 
 const routes = Router();
 
-routes.use(ReqLogs);
+// routes.use(ReqLogs);
 routes.use('/transactions', transactionsRouter);
 
 export default routes;

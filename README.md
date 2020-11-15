@@ -3,5 +3,6 @@
  - terminar as models [x]
   - rodar as migrations [x]
  - criar transactions [x]
+ - listar todas as transactions com o balance [x]
  - deletar transactions []
  - importar files .csv []
