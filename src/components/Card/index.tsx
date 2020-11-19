@@ -1,6 +1,8 @@
 import React from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 
+import { CardContainer } from './styles';
+
 export interface Repository {
   full_name: string;
   owner: {
@@ -16,15 +18,17 @@ const Card: React.FC<Repository> = ({
   description,
 }: Repository) => {
   return (
-    <a href={full_name}>
-      <img src={owner.avatar_url} alt="teste" />
-      <div>
-        <strong>{full_name}</strong>
-        <p>{description}</p>
-      </div>
+    <CardContainer>
+      <a href={`https://github.com/${full_name}`}>
+        <img src={owner.avatar_url} alt="teste" />
+        <div>
+          <strong>{full_name}</strong>
+          <p>{description}</p>
+        </div>
 
-      <FiChevronRight size={20} />
-    </a>
+        <FiChevronRight size={20} />
+      </a>
+    </CardContainer>
   );
 };
 

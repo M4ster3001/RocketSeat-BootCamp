@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import {} from 'react-icons/fi';
 
 import { Title, Form, Repositories } from './styles';
@@ -7,6 +7,7 @@ import { Title, Form, Repositories } from './styles';
 import logoImg from '../../assets/Logo.svg';
 import api from '../../services/api';
 import Card from '../../components/Card';
+import Error from '../../components/Error';
 
 interface Repository {
   full_name: string;
@@ -18,13 +19,36 @@ interface Repository {
 }
 
 const Dashboard: React.FC = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>(() => {
+    const storagedRepositories = localStorage.getItem(
+      '@GithubExplorer:repositories',
+    );
+
+    if (storagedRepositories) {
+      return JSON.parse(storagedRepositories);
+    }
+
+    return [];
+  });
+  const [error, setError] = useState('');
   const [newRepo, setNewRepo] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem(
+      '@GithubExplorer:repositories',
+      JSON.stringify(repositories),
+    );
+  }, [repositories]);
 
   async function handleAddRepository(
     e: FormEvent<HTMLFormElement>,
   ): Promise<void> {
     e.preventDefault();
+
+    if (!newRepo) {
+      setError('Digite o autor/nome do repositório');
+      return;
+    }
 
     await api
       .get<Repository>(`repos/${newRepo}`)
@@ -32,9 +56,10 @@ const Dashboard: React.FC = () => {
         const repository = resp.data;
 
         setRepositories([...repositories, repository]);
+        setError('');
       })
       .catch(er => {
-        alert(er);
+        setError('Erro na busca pelo repositório');
       });
   }
 
@@ -43,7 +68,7 @@ const Dashboard: React.FC = () => {
       <img src={logoImg} alt="Logo github" />
       <Title>Dashboard</Title>
 
-      <Form onSubmit={handleAddRepository}>
+      <Form hasError={!!error} onSubmit={handleAddRepository}>
         <input
           placeholder="Digite o nome do repositorio"
           value={newRepo}
@@ -51,6 +76,8 @@ const Dashboard: React.FC = () => {
         />
         <button type="submit">Pesquisar</button>
       </Form>
+
+      {error && <Error message={error} />}
 
       <Repositories>
         {repositories &&
