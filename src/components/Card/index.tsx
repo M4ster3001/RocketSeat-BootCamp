@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiChevronRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import { CardContainer } from './styles';
 
@@ -19,7 +20,7 @@ const Card: React.FC<Repository> = ({
 }: Repository) => {
   return (
     <CardContainer>
-      <a href={`https://github.com/${full_name}`}>
+      <Link to={`/repository/${full_name}`}>
         <img src={owner.avatar_url} alt="teste" />
         <div>
           <strong>{full_name}</strong>
@@ -27,7 +28,7 @@ const Card: React.FC<Repository> = ({
         </div>
 
         <FiChevronRight size={20} />
-      </a>
+      </Link>
     </CardContainer>
   );
 };
