@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container, FileInfo } from './styles';
 
-interface FileProps {
+export interface FileProps {
   name: string;
   readableSize: string;
 }
@@ -14,12 +14,15 @@ interface FileListProps {
 const FileList: React.FC<FileListProps> = ({ files }: FileListProps) => {
   return (
     <Container>
-      {files.map((uploadedFile) => (
+      {files.map(uploadedFile => (
         <li key={uploadedFile.name}>
           <FileInfo>
             <div>
               <strong>{uploadedFile.name}</strong>
-              <span>{uploadedFile.readableSize}</span>
+              <span>
+                {uploadedFile.readableSize}
+                kb
+              </span>
             </div>
           </FileInfo>
         </li>
